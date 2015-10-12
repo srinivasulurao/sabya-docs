@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<HTML class="msie msie9">
+<HEAD>
+<META content="IE=9.0000" http-equiv="X-UA-Compatible">
+<TITLE>Border town order Form</TITLE>
+<style>
+body{
+	font-family: lucida sans unicode;
+	font-size:small;
+}
+.buttonclass {
+	color: white;
+	background-color: #62951c;
+	margin: 10px;
+	font-family: "Lucida Grande", "Lucida Sans Unicode", Tahoma, sans-serif;
+	font-size: 95%;
+	letter-spacing: .01em;
+	padding: 20px;
+}
+</style>
+<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js'></script>
+
+<script>
+	// $(document).ready(function() {
+	// 	initializeScript();
+	// });
+</script>
+
+</head>
+<body>
+	<div id="container">
+		<div id="headerDiv">
+			<h1>Border town order Form</h1>
+		</div>
+		<div id="bodyDiv">
+			<FORM id="form77" class="formClass" accept-charset="UTF-8"
+				encType="multipart/form-data" method="post" name="form77"
+				>
+				<div id="bodyHeader" class="fontStyles">
+					<H2>Border town order</H2>
+					<DIV id="headerInfo">
+						Please provide all mandatory information.
+						<div style="padding-left: 15px;">
+							<span style="color: red">*</span> indicates mandatory element
+						</div>
+					</DIV>
+				</div>
+				<div id="bodyData">
+					<TABLE id="mainTableForm" style="width:500px">
+
+						<TR class="lblclass" tooltip="Enter BTN (Customer's BTN with DirecTV)">
+							<TD>BTN (Customer's BTN with DirecTV)</TD>
+						</TR>
+						<TR class="dataclass">
+							<TD><input type="text" class="docsTelephone inputClass edDocumnetIndexClass docsUppercase" EDLABEL="Customer Telephone Number" id="btn" name="btn" maxlength="20" columnPosition="4" ></TD>
+						</TR>
+
+						<TR  class="lblclass"  tooltip="Enter First Name and Last Name">
+							<TD>
+								First Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Last Name</TD>
+						</TR>
+
+						<TR class="dataclass">
+							<TD>
+							<input type="text" id="firstName" name="firstName" class="inputClass docsUppercase" maxlength="40">&nbsp;&nbsp;<input type="text" id="lastName" name="lastName" class="inputClass docsUppercase" maxlength="40"></TD>
+							</TD>
+						</TR>
+
+
+						<TR  class="lblclass"  tooltip="Select Type of Order">
+							<TD class="mandatoryInd">Order Type</TD>
+						</TR>
+						<TR class="dataclass">
+							<TD >
+
+
+			<select name="OrderType" size=1 class="docsMandatory inputClass edDocumnetIndexClass" id="OrderType" onchange="getDetailsForOrderType()" EDLABEL="Order Type" columnPosition="1">
+									<option value="-1"> -- Select -- </option>
+									<option value="New">New</option>
+									<option value="Change">Change</option>
+									<option value="Disc">Disc</option>
+									<option value="T&F">T&F</option>
+
+								</select>
+							</TD>
+						</TR>
+					</table>
+					<div class='actionArea'>
+					</div>
+
+					<table>
+						<TD align=center class="fontStyles"><H3>Submitter
+						      Information</H3></TD>
+						</TR>
+						<TR class="lblclass">
+						  <TD>Agent CUID</TD>
+						</TR>
+						<TR class="dataclass">
+						  <TD><input type="text" maxlength="25" size="40" columnPosition="200"
+						    EDLABEL="Agent CUID"
+						    class="docsMandatory inputClass edDocumnetIndexClass readonlyIfNotNull"
+						    name="agent_cuid" id="agent_cuid" value="<AGENTCUID>" /></TD>
+						</TR>
+						<TR class="lblclass">
+						  <TD>Agent Email</TD>
+						</TR>
+						<TR class="dataclass">
+						  <TD><input type="text" maxlength="100" size="40" columnPosition="201"
+						    EDLABEL="Agent Email"
+						    class="readonlyIfNotNull docsMandatory inputClass edDocumnetIndexClass"
+						    name="agent_email_id" id="agent_email_id" value="<AGENTEMAIL>" /></TD>
+						</TR>
+						<TR class="lblclass">
+						  <TD>Agent Contact Phone Number</TD>
+						</TR>
+						<TR class="dataclass">
+						  <TD><input type="text" maxlength="20" size="40" columnPosition="202" EDLABEL="Agent Contact Phone Number"
+						    class="readonlyIfNotNull docsMandatory inputClass edDocumnetIndexClass" name="agent_phone_no"
+						    id="agent_phone_no" value="<AGENTPHONENUMBER>" disabled/></TD>
+						</TR>
+					</table>
+
+					<center style="padding: 20px 0px 20px 0px">
+						<button id="submit" type="button" name="submit"
+							onclick="validateActionsandSubmit()" value="submit"
+							class="button green medium">Submit</button>
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						<button id="reset" name="reset" type="reset" value="reset"
+							onclick="resetFormContent()" class="button green medium">Reset</button>
+					</center>
+
+
+				</div>
+			</form>
+		</div>
+	</div>
+</body>
+</html>
+
+<script>
+
+function getDetailsForOrderType(){
+pref=document.getElementById('OrderType').value;
+
+if(pref=='New')
+redirectionUrl='newOrder.html';
+if(pref=='Change')
+redirectionUrl='ChangeOrder.html';
+if(pref=='Disc')
+redirectionUrl='DiscOrder.html';
+if(pref=='T&F')
+	redirectionUrl='tnfOrder.html';
+
+$.ajax({
+  url:redirectionUrl,
+  type:'GET',
+	dataType:'HTML',
+  success:function(data){
+ $('.actionArea').html(data);
+ initSet();
+  },
+  error:function(){
+    $('.actionArea').html("<font color='red'>En Error has occured !</font>");
+  }
+});
+
+}
+
+function changeCity(){
+  var options="";
+
+  state=document.getElementById('state').value;
+  console.log(state);
+  if(state==='CO')
+    options="<option value='crook'>CROOK</option><option value='Glendevey'>Glendevey</option><option value='Julesburg'>Julesburg</option><option value='Peetz'>Peetz</option><option value='S Big Springs'>S Big Springs</option><option value='S Cheyenne'>S Cheyenne</option><option value='S Laramie'>S Laramie</option><option value='S Sidney'>S Sidney</option><option value='Venango'>Venango</option>";
+  if(state==="IA")
+    options="<option value='Carter Lake'>Carter Lake</option><option value='E Canton'>E Canton</option><option value='Larchwood (E Harrisburg)'>Larchwood (E Harrisburg)</option><option value='Inwood'>Inwood</option><option value='Rock Valley'>Rock Valley</option>";
+  if(state==="ID")
+	  options="<option value='Tygee Valley'>Tygee Valley</option>";
+  if(state==="MN")
+	  options="<option value='Moorhead'>Moorhead</option><option value='East Grand Forks'>East Grand Forks</option><option value='Breckenridge'>Breckenridge</option><option value='Campbell'>Campbell</option><option value='Comstock'>Comstock</option><option value='Dilworth'>Dilworth</option><option value='Doran'>Doran</option><option value='Felton'>Felton</option><option value='Foxhome'>Foxhome</option><option value='Georgetown'>Georgetown</option><option value='N Estherville'>N Estherville</option><option value='North Lake Park'>North Lake Park</option><option value='North Spirit Lake'>North Spirit Lake</option><option value='Sabin'>Sabin</option>";
+	if(state==="MT")
+	  options="<option value='N Parkman'>N Parkman</option><option value='Silver Tip'>Silver Tip</option>";
+	if(state==="ND")
+	  options="<option value='Cartwright'>Cartwright</option><option value='E Fairview'>E Fairview</option><option value='E Sidney'>E Sidney</option><option value='N McIntosh'>N McIntosh</option><option value='N Morristown'>N Morristown</option>";
+  if(state==="NE")
+	  options="<option value='Crofton'>Crofton</option><option value='Fordyce'>Fordyce</option><option value='N Julesburg'>N Julesburg</option><option value='S Yankton'>S Yankton</option><option value='St Helena'>St Helena</option><option value='W Hamburg'>W Hamburg</option>";
+	if(state==="OR")
+	  options="<option value='Stateline'>Stateline</option>";
+	if(state==="SD")
+	  options="<option value='Big Stone City'>Big Stone City</option><option value='North Sioux City'>North Sioux City</option><option value='Olsonville'>Olsonville</option><option value='N Valentine'>N Valentine</option>";
+	if(state==="UT")
+	  options="<option value='Big Water'>Big Water</option><option value='Church Wells'>Church Wells</option><option value='Glen Canyon City'>Glen Canyon City</option>";
+	if(state==="WA")
+	  options="<option value='Clarkston'>Clarkston</option>";
+	if(state==="WY")
+	  options="<option value='Aladdin	Beulah'>Aladdin	Beulah</option><option value='Border'>Border</option><option value='Colony'>Colony</option><option value='W Belle Fourche'>W Belle Fourche</option><option value='W Spearfish'>W Spearfish</option>";
+
+	 options="<option value=''>--SELECT CITY--</option>"+options;
+   document.getElementById('city').innerHTML=options;
+ }
+
+ function showHideSmallBusinessType(ty){
+
+	 if(ty=='consumer'){
+   $('.small_business_type,#small_business_type').hide();
+	 }
+	 else{
+		 $('.small_business_type,#small_business_type').show();
+	 }
+ }
+
+
+</script>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+<script>
+function initSet(){
+	$( "#customer_dob,#requested_due_date" ).datepicker();
+
+}
+
+
+</script>

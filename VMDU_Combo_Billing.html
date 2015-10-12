@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<HTML class="msie msie9">
+<HEAD>
+<META content="IE=9.0000" http-equiv="X-UA-Compatible">
+<TITLE>VMDU Combo Billing Form</TITLE>
+<style>
+.buttonclass {
+	color: white;
+	background-color: #62951c;
+	margin: 10px;
+	font-family: "Lucida Grande", "Lucida Sans Unicode", Tahoma, sans-serif;
+	font-size: 95%;
+	letter-spacing: .01em;
+	padding: 20px;
+}
+</style>
+<script>
+	$(document).ready(function() {
+		initializeScript();
+	});
+	
+	//on change method invoked to add dynamic labels for REG type
+	function getDetailsForRequestType(thisObj){
+		var formVal = thisObj.value;
+		$(".shippingaddr").remove();
+		$(".installdate").remove();
+		$(".headerinfo").remove();
+		
+		if (formVal.localeCompare("REG to MDU") == 0) {
+			addDynamicConditionForReg();
+		} else if (formVal.localeCompare("REG to TMU") == 0) {
+			addDynamicConditionForReg();
+		} 
+	}
+	
+	//method to add dynamic lables for Reg type
+	function addDynamicConditionForReg(thisObj){
+		
+		var newrowdata=
+			'<TR class="headerclass headerinfo"><TD align=center class="fontStyles"><H3>Customer VMDU Address</H3> <br>This is the address of the VMDU location they are moving into or currently in. <br>* * * DO NOT ENTER n/a * * * <br>***  HAS THE CUSTOMER UPDATED THEIR ADDRESS WITH DIRECTV?****</TD>'
+			+'</TR><TR class="lblclass shippingaddr" tooltip="Enter Street Number/Name">'
+			+'<TD class="mandatoryInd">Street Number/Name</TD></TR>'
+			+'<TR class="dataclass shippingaddr"><TD>'
+			+'<input type="hidden" id="shippingAddress" class="addressType" value="SERVICE" addressIndex="1"><input type="text" id="streetNumber" name="streetNumber" addressIndex="1"  class="streetAddress1 docsMandatory docsUppercase inputClass" maxlength="40" addressIndex="1"></TD></TR>'
+			+'<TR class="lblclass shippingaddr" tooltip="Enter Additional Address  (Unit/Apt/Suite, etc)"><TD >Additional Address  (Unit/Apt/Suite, etc)</TD></TR>'
+			+'<TR class="dataclass shippingaddr"><TD><input type="text" id="additionalAddress" name="additionalAddress"  class="inputClass docsUppercase streetAddress2" maxlength="40" addressIndex="1"></TD></TR>'
+			+'<TR class="lblclass shippingaddr" tooltip="Enter City"><TD class="mandatoryInd">City</TD></TR>'
+			+'<TR class="dataclass shippingaddr"><TD><input type="text" id="city" name="city" addressIndex="1" class="city inputClass docsUppercase docsMandatory" maxlength="40"></TD></TR> '
+			+'<TR class="lblclass shippingaddr" tooltip="Enter State"><TD class="mandatoryInd">State</TD></TR>'
+			+'<TR class="dataclass shippingaddr"><TD><select name="state" id="state" class="inputClass docsMandatory stateProvince " addressIndex="1"  ><option value="-1">< --Select-- ></option><option value="AL">AL-Alabama</option><option value="AR">AR-Arkansas</option><option value="AZ">AZ-Arizona</option><option value="CO">CO-Colorado</option><option value="FL">FL-Florida</option><option value="GA">GA-Georgia</option><option value="IA">IA-Iowa</option><option value="ID">ID-Idaho</option><option value="IL">IL-Illinois</option><option value="IN">IN-Indiana</option><option value="KS">KS-Kansas</option><option value="LA">LA-Louisiana</option><option value="MI">MI-Michigan</option><option value="MN">MN-Minnesota</option><option value="MO">MO-Missouri</option><option value="MS">MS-Mississippi</option><option value="MT">MT-Montana</option><option value="NC">NC-North Carolina</option><option value="ND">ND-North Dakota</option><option value="NE">NE-Nebraska</option><option value="NJ">NJ-New Jersey</option><option value="NM">NM-New Mexico</option><option value="NV">NV-Nevada</option><option value="OH">OH-Ohio</option><option value="OK">OK-Oklahoma</option><option value="OR">OR-Oregon</option><option value="PA">PA-Pennsylvania</option><option value="SC">SC-South Carolina</option><option value="SD">SD-South Dakota</option><option value="TN">TN-Tennessee</option><option value="TX">TX-Texas</option><option value="UT">UT-Utah</option><option value="VA">VA-Virginia</option><option value="WA">WA-Washington</option><option value="WI">WI-Wisconsin</option><option value="WY">WY-Wyoming</option></select></TD></TR>'
+			+'<TR class="lblclass shippingaddr" tooltip="Enter Zip Code"><TD class="mandatoryInd">Zip Code</TD></TR>'
+			+'<TR class="dataclass shippingaddr"><TD><input type="text" id="zipCode" name="zipCode" addressIndex="1"  class="postalCode docsMandatory docsZipcode inputClass" maxlength="10"></TD></TR>'
+			+'<TR class="lblclass installdate" tooltip="Enter Install Date">'
+			+'<TD class="mandatoryInd">Install Date <br> Date that the service was installed by CenturyLink</TD></TR>'
+			+'<TR class="dataclass datepickerFutureOnly installdate"><TD>'
+			+'<input type="text" maxlength="10" class="datepickerFutureOnly docsMandatory" name="installdate" id="installdate" size=10/>'
+			+'</TD></TR>';
+	
+			var newrow=$(newrowdata);
+			$('#requestType').closest("tr").after(newrow);
+	
+	}
+	
+	//This method is to set values specific to request types "Reg to MDU" and "REG to TMU"
+	function createDataMapForReg(){
+		var serviceAddrs='<b>Street Number/Name :</b> '+$('#streetNumber').val()+'<br>'+'<b>Additional Address :</b> '+$('#additionalAddress').val()+'<br>'+'<b>City :</b> '+$('#city').val()+'<br>'+'<b>State :</b> '+$('#state').val()+'<br>'+'<b>Zip Code :</b> '+$('#zipCode').val();
+		obj={"id":"<b>Customer VMDU Address</b>","value":serviceAddrs};
+		dataMap.dataMapKeyValues.push(obj);
+		
+		obj={"edHeader":"<b>Customer VMDU Address</b>","edPosition":"7"};
+		edFormationKeys.edLabelHeaders.push(obj);
+		
+		obj={"id":"SENDEMAIL","value":"Y"};
+		dataMap.dataMapKeyValues.push(obj);
+			
+		
+		obj={"id":"FROMEMAILADDRESS","value":"RSCSSC.ESCALATIONS@CenturyLink.com"};
+		dataMap.dataMapKeyValues.push(obj);
+		
+		obj={"id":"TOADDRESS","value":"agentservices@directv.com"};
+		dataMap.dataMapKeyValues.push(obj);
+		
+	}
+	
+	
+	
+	function validateActionsandSubmit() {
+		if (validate()) {
+			resetTaskInfoObjects();
+				var requestType=$("#requestType").val();
+									
+				obj = {"id" : "CTG_Identifier","value" : requestType};
+				dataMap.dataMapKeyValues.push(obj);
+
+				obj={"id":"<b>Customer Name</b>","value": $("#firstName").val()+" "+$("#lastName").val()};
+				dataMap.dataMapKeyValues.push(obj);
+				
+				obj={"edHeader":"<b>Customer Name</b>","edPosition":"6"};
+				edFormationKeys.edLabelHeaders.push(obj);
+											
+				if(requestType=="REG to MDU" ){
+					createDataMapForReg();
+
+					obj={"id":"MESSAGESUBJECT","value": $("#firstName").val()+" "+$("#lastName").val()+" DIRECTV "+$("#ban").val()+" PID "+$("#pid").val()};
+					dataMap.dataMapKeyValues.push(obj);
+					
+				} else if(requestType=="REG to TMU"){
+					createDataMapForReg();
+					
+					obj={"id":"MESSAGESUBJECT","value": " DIRECTV "+$("#ban").val()+" PID "+$("#pid").val()+" Install Date "+$("#installdate").val()};
+					dataMap.dataMapKeyValues.push(obj);
+					
+				}	
+				
+			submitValues();
+		}
+	}
+	
+</script>
+</head>
+<body>
+	<div id="container">
+		<div id="headerDiv">
+			<h1>VMDU Combo Billing Form</h1>
+		</div>
+		<div id="bodyDiv">
+			<FORM id="form76" class="formClass" accept-charset="UTF-8"
+				encType="multipart/form-data" method="post" name="form76"
+				>
+				<div id="bodyHeader" class="fontStyles">
+					<H2>VMDU Combo Billing</H2>
+					<DIV id="headerInfo">						
+						Please provide all mandatory information.
+						<div style="padding-left: 15px;">
+							<span style="color: red">*</span> indicates mandatory element 
+						</div>
+					</DIV>
+				</div>
+				<div id="bodyData">
+					<TABLE id="mainTableForm" style="width:500px">
+						<TR  class="lblclass"  tooltip="Enter DIRECTV Account Number">
+							<TD class="mandatoryInd">DIRECTV Account Number<br>***Must be 9 digits ***** Add leading zeroes if necessary </TD>
+						</TR>
+						<TR class="dataclass">
+							<TD><input type="text" class="docsMandatory inputClass edDocumnetIndexClass docsUppercase" EDLABEL="DIRECTV Account Number" id="ban" name="accountNumber" maxlength="9" columnPosition="2"></TD>
+						</TR>
+						
+						<TR class="lblclass" tooltip="Enter BTN (Customer's BTN with DirecTV)">
+							<TD>BTN (Customer's BTN with DirecTV)</TD>
+						</TR>
+						<TR class="dataclass">
+							<TD><input type="text" class="docsTelephone inputClass edDocumnetIndexClass docsUppercase" EDLABEL="Customer Telephone Number" id="btn" name="btn" maxlength="20" columnPosition="4" ></TD>
+						</TR>
+
+						<TR class="lblclass" tooltip="Enter PID/DIRECTV ID">
+							<TD class="mandatoryInd">PID/DIRECTV ID<br>THIS IS THE 7 DIGIT DTV ID NUMBER FROM THE PROPERTY LIST </TD>
+						</TR>
+						<TR class="dataclass">
+							<TD><input type="text" class="docsMandatory inputClass edDocumnetIndexClass docsUppercase" EDLABEL="PID/DIRECTV ID" id="pid" name="pid" maxlength="7" columnPosition="5" ></TD>
+						</TR>
+
+
+						<TR  class="lblclass"  tooltip="Enter First Name and Last Name">
+							<TD>
+								First Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Last Name</TD>
+						</TR>
+
+						<TR class="dataclass">
+							<TD>
+							<input type="text" id="firstName" name="firstName" class="inputClass docsUppercase" maxlength="40">&nbsp;&nbsp;<input type="text" id="lastName" name="lastName" class="inputClass docsUppercase" maxlength="40"></TD>
+							</TD>
+						</TR>
+
+
+						<TR  class="lblclass"  tooltip="Select Type of Request">
+							<TD class="mandatoryInd">Request Type</TD>
+						</TR>
+						<TR class="dataclass">
+							<TD >
+								<select name="requestType" size=1 class="docsMandatory inputClass edDocumnetIndexClass" id="requestType" onchange="getDetailsForRequestType(this)" EDLABEL="Request Type" columnPosition="1">
+									<option value="-1"> -- Select -- </option>
+									<option value="REG to MDU">REG to MDU</option>
+									<option value="REG to TMU">REG to TMU</option>
+									<option value="MDU to JDU">MDU to JDU</option>
+								</select>
+							</TD>
+						</TR>
+									
+
+						<TR>
+						<TD align=center class="fontStyles"><H3>Submitter
+									Information</H3></TD>
+						</TR>
+						<TR class="lblclass">
+							<TD>Agent CUID</TD>
+						</TR>
+						<TR class="dataclass">
+							<TD><input type="text" maxlength="25" size="40" columnPosition="200"
+								EDLABEL="Agent CUID"
+								class="docsMandatory inputClass edDocumnetIndexClass readonlyIfNotNull"
+								name="agent_cuid" id="agent_cuid" value="<AGENTCUID>" /></TD>
+						</TR>
+						<TR class="lblclass">
+							<TD>Agent Email</TD>
+						</TR>
+						<TR class="dataclass">
+							<TD><input type="text" maxlength="100" size="40" columnPosition="201"
+								EDLABEL="Agent Email"
+								class="readonlyIfNotNull docsMandatory inputClass edDocumnetIndexClass"
+								name="agent_email_id" id="agent_email_id" value="<AGENTEMAIL>" /></TD>
+						</TR>
+						<TR class="lblclass">
+							<TD>Agent Contact Phone Number</TD>
+						</TR>
+						<TR class="dataclass">
+							<TD><input type="text" maxlength="20" size="40" columnPosition="202" EDLABEL="Agent Contact Phone Number"
+								class="readonlyIfNotNull docsMandatory inputClass edDocumnetIndexClass" name="agent_phone_no"
+								id="agent_phone_no" value="<AGENTPHONENUMBER>" disabled/></TD>
+						</TR>
+					</table>
+					<center style="padding: 20px 0px 20px 0px">
+						<button id="submit" type="button" name="submit"
+							onclick="validateActionsandSubmit()" value="submit"
+							class="button green medium">Submit</button>
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						<button id="reset" name="reset" type="reset" value="reset"
+							onclick="resetFormContent()" class="button green medium">Reset</button>
+					</center>
+
+
+				</div>
+			</form>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<HTML class="msie msie9">
+<HEAD>
+<META content="IE=9.0000" http-equiv="X-UA-Compatible">
+<TITLE>Follow-up</TITLE>
+<style>
+.buttonclass {
+	color: white;
+	background-color: #62951c;
+	margin: 10px;
+	font-family: "Lucida Grande", "Lucida Sans Unicode", Tahoma, sans-serif;
+	font-size: 95%;
+	letter-spacing: .01em;
+	padding: 20px;
+}
+</style>
+<script>
+	$(document).ready(function() {
+		initializeScript();
+	});
+	function getCategories(){
+		var requestCenter=$("#requestType").val();
+		if(requestCenter=="Omaha"){
+			var inputData = new Array();
+			inputData.push("OMA");
+			getFormDbFetchValues('documentType',inputData);
+		}else if(requestCenter=="Phoenix"){
+			var inputData = new Array();
+			inputData.push("OMA");
+			getFormDbFetchValues('documentType',inputData);
+		}else if (requestCenter=="Collections"){
+			var inputData = new Array();
+			inputData.push("COL");
+			getFormDbFetchValues('documentType',inputData);
+		}else if (requestCenter=="Monroe"){
+			var inputData = new Array();
+			inputData.push("MON");
+			getFormDbFetchValues('documentType',inputData);
+		}
+		sortStringsInSelectOptions("documentType");
+		$("#documentType").val("-1");
+
+	}
+	
+	$('#npa,#coc,#line').keyup(function() {
+									if ($(this).val().length == $(this).attr(
+											'maxlength')) {
+										if ("npa" == $(this).attr('id')) {
+											$('#coc').focus();
+										}
+										if ("coc" == $(this).attr('id')) {
+											$('#line').focus();
+										}
+										if ("line" == $(this).attr('id')) {
+											$('#custCode').focus();
+										}
+										if ("custCode" == $(this).attr('id')) {
+											$('#followupDate').focus();
+										}
+									}
+								});
+
+	function validateNames()
+	{
+		var nameEntered = false;
+		
+		$("#followupDate").removeClass("blueborder");
+		$("#followupHours").removeClass("blueborder");
+		
+		var folup_date = $("#followupDate").val();
+		var folup_hours = $("#followupHours").val();
+
+		if("" != folup_date || -1 != folup_hours)
+			nameEntered = true;
+
+		if(!nameEntered)
+		{
+			$("#followupDate").addClass("blueborder");
+			$("#followupHours").addClass("blueborder");
+			return false;
+		}
+		return true;
+	}
+
+
+	function validateActionsandSubmit() {
+		var checkFollowup = validateNames();
+		if (validate() && checkFollowup) {
+			resetTaskInfoObjects();
+			var obj = {
+					"id" : "ED_HEADER",
+					"value" : "<span style='font-family: Helvetica, Sans-Serif; font-size: 25px;font-weight:bolder;text-align:center;vertical-align:middle;color: #088642;'>\"ECM\" EROC Follow-up</span>"
+				};
+				dataMap.dataMapKeyValues.push(obj);
+
+				obj = {
+					"id" : "CTG_CODE",
+					"value" : $("#documentType").val().split(" ")[0]
+				};
+				dataMap.dataMapKeyValues.push(obj);
+
+				obj = {
+					"id" : "CTG_Identifier",
+					"value" : $("#documentType").val()
+				};
+				dataMap.dataMapKeyValues.push(obj);
+
+
+					var obj={"id":"<b>Document Type</b>","value": $("#documentType :selected").text()};
+					dataMap.dataMapKeyValues.push(obj);
+					
+					var obj={"edHeader":"<b>Document Type</b>","edPosition":"8"};
+					edFormationKeys.edLabelHeaders.push(obj);
+
+				
+				if($("#followupDate").val() != null && $("#followupDate").val() != "undefined" && $("#followupDate").val() != "" ) {
+					/*var obj={"id":"followupDate","value":$("#followupDate").val()+" 00:00"};
+					dataMap.dataMapKeyValues.push(obj);
+										
+					var obj={"id":"<b>Follow-up Date</b>","value": $("#followupDate").val()+" 00:00"};
+					dataMap.dataMapKeyValues.push(obj);*/
+
+					var obj={"id":"followupDate","value":$("#followupDate").val()+" 00:00"};
+					dataMap.dataMapKeyValues.push(obj);
+					
+					if( $("#followupHours").val() != -1) {
+						var obj={"id":"followupHours","value":parseInt($("#followupHours").val())};
+						dataMap.dataMapKeyValues.push(obj);
+						
+						var obj={"id":"<b>Follow-up Date</b>","value": $("#followupDate").val()+" "+$("#followupHours").val()+":00"};
+						dataMap.dataMapKeyValues.push(obj);
+					} else {
+						var obj={"id":"followupHours","value":parseInt("0")};
+						dataMap.dataMapKeyValues.push(obj);
+						
+						var obj={"id":"<b>Follow-up Date</b>","value": $("#followupDate").val()+" 00:00"};
+						dataMap.dataMapKeyValues.push(obj);
+					}
+					
+					var obj={"edHeader":"<b>Follow-up Date</b>","edPosition":"6"};
+					edFormationKeys.edLabelHeaders.push(obj);
+
+				} else if($("#followupHours").val() != null && $("#followupHours").val() != -1 && $("#followupHours").val() != "undefined" && $("#followupHours").val() != "" ){
+					
+					var dateString = $.datepicker.formatDate( "yy-mm-dd",new Date());
+					
+					var obj={"id":"followupDate","value":dateString+" 00:00"};
+					dataMap.dataMapKeyValues.push(obj);
+										
+					var obj={"id":"followupHours","value":parseInt($("#followupHours").val())};
+					dataMap.dataMapKeyValues.push(obj);
+					
+					var obj={"id":"<b>Follow-up Date</b>","value": dateString+" "+$("#followupHours").val()+":00"};
+					dataMap.dataMapKeyValues.push(obj);
+
+					var obj={"edHeader":"<b>Follow-up Date</b>","edPosition":"6"};
+					edFormationKeys.edLabelHeaders.push(obj);
+				}
+				obj={"id":"<b>Customer Name</b>","value": $("#firstName").val()+" "+$("#lastName").val()};
+				dataMap.dataMapKeyValues.push(obj);
+				
+				obj={"edHeader":"<b>Customer Name</b>","edPosition":"7"};
+				edFormationKeys.edLabelHeaders.push(obj);
+			submitValues();
+		}
+	}
+	
+</script>
+</head>
+<body>
+	<div id="container">
+		<div id="headerDiv">
+			<h1>Follow-up</h1>
+		</div>
+		<div id="bodyDiv">
+			<FORM id="form76" class="formClass" accept-charset="UTF-8"
+				encType="multipart/form-data" method="post" name="form76"
+				>
+				<div id="bodyHeader" class="fontStyles">
+					<H2>Follow-up</H2>
+					<DIV id="headerInfo">
+						<span style="color: red">Enter a task that will be dispatched as an available item on the date/hours selected. Some FLUP forms route back into the category selected while others route back to submitter.</span></br>
+						Please provide all mandatory information.
+						<div style="padding-left: 15px;">
+							<span style="color: red">*</span> indicates mandatory element 
+						</div>
+					</DIV>
+				</div>
+				<div id="bodyData">
+					<TABLE id="mainTableForm" style="width:500px">
+						<TR  class="lblclass"  tooltip="Select Request Center">
+							<TD class="mandatoryInd">Request Center</TD>
+						</TR>
+						<TR class="dataclass">
+							<TD >
+								<select name="requestType" size=1 class="docsMandatory inputClass edDocumnetIndexClass" id="requestType" columnPosition="1" onchange="getCategories()" EDLABEL="Request Center" columnPosition="1">
+									<option value="-1"> -- Select -- </option>
+									<option value="Collections">Collections</option>
+									<option value="Monroe">Monroe</option>
+									<option value="Omaha">Omaha</option>
+									<option value="Phoenix">Phoenix</option>
+								</select>
+							</TD>
+						</TR>
+						
+
+						<TR  class="lblclass"  tooltip="Enter NPA,NXX,LINE and CUST CODE">
+							<TD >&nbsp;NPA<span style="color: red">*</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;COC<span style="color: red">*</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LINE<span style="color: red">*</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CUST CODE</TD>
+						</TR>
+						<TR class="dataclass">
+							<TD>
+							<INPUT TYPE="text" NAME="npa" id="npa" class="docsMandatory inputClass edDocumnetIndexClass docsNpa" EDLABEL="NPA" columnPosition="2" maxlength="3" size="3">&nbsp;&nbsp;&nbsp;<INPUT TYPE="text" NAME="coc" id="coc" class="docsMandatory inputClass edDocumnetIndexClass docsNxx" EDLABEL="COC" columnPosition="3" maxlength="3" size="3">&nbsp;&nbsp;&nbsp;<INPUT TYPE="text" NAME="line" id="line" class="docsMandatory inputClass edDocumnetIndexClass docsLine" EDLABEL="LINE" columnPosition="4" maxlength="4" size="4">&nbsp;&nbsp;&nbsp;<INPUT TYPE="text" NAME="custCode" id="custCode" class="inputClass edDocumnetIndexClass docsCus" EDLABEL="Customer Code" columnPosition="5" maxlength="3" size="3">
+							</TD>
+						</TR>
+					
+
+						<TR  class="lblclass"  tooltip="Enter Follow-up Date or Hours">
+							<TD class="mandatoryInd">Follow-up Date OR Hours</TD>
+						</TR>
+						<TR class="dataclass">
+							<TD ><input type="text" maxlength="10" class="datepickerFutureOnly" name="followupDate" id="followupDate" size=10/>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <select name="followupHours" size=1 id="followupHours" >
+									<option value="-1">HH</option>
+									<option value="1">01</option>
+									<option value="2">02</option>
+									<option value="3">03</option>
+									<option value="4">04</option>
+									<option value="5">05</option>
+									<option value="6">06</option>
+									<option value="7">07</option>
+									<option value="8">08</option>
+									<option value="9">09</option>
+									<option value="10">10</option>
+									<option value="11">11</option>
+									<option value="12">12</option>
+									<option value="13">13</option>
+									<option value="14">14</option>
+									<option value="15">15</option>
+									<option value="16">16</option>
+									<option value="17">17</option>
+									<option value="18">18</option>
+									<option value="19">19</option>
+									<option value="20">20</option>
+									<option value="21">21</option>
+									<option value="22">22</option>
+									<option value="23">23</option>
+								</select>
+							</TD>
+						</TR>
+
+						<TR  class="lblclass"  tooltip="Enter First Name and Last Name">
+							<TD>
+								First Name&nbsp;<span style="color:red">*</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Last Name</TD>
+						</TR>
+
+						<TR class="dataclass">
+							<TD>
+							<input type="text" id="firstName" name="firstName" class="docsMandatory inputClass" maxlength="40">&nbsp;&nbsp;<input type="text" id="lastName" name="lastName" class="inputClass" maxlength="40"></TD>
+							</TD>
+						</TR>
+
+						<TR  class="lblclass"  tooltip="Select Document Type">
+							<TD class="mandatoryInd">Document Type</TD>
+						</TR>
+						<TR class="dataclass">
+							<TD >
+								<select name="documentType" size=1 class="docsMandatory inputClass medium" id="documentType">
+									<option value="-1"> -- Select -- </option>
+								</select>
+							</TD>
+						</TR>
+							
+						<TR class="lblclass" tooltip="Enter Additional Information">
+							<TD>Additional Information</TD>
+						</TR>
+						<TR class="dataclass">
+							<TD><TEXTAREA NAME="additionalInformation" ROWS="6" COLS="22" class="counter inputClass edDocumnetIndexClass" id="additionalInformation" EDLABEL="Additional Information" columnPosition="9"></textarea></TD>
+						</TR>
+
+						<TR>
+						<TD align=center class="fontStyles"><H3>Submitter
+									Information</H3></TD>
+						</TR>
+						<TR class="lblclass">
+							<TD>Agent CUID</TD>
+						</TR>
+						<TR class="dataclass">
+							<TD><input type="text" maxlength="25" size="40" columnPosition="200"
+								EDLABEL="Agent CUID"
+								class="docsMandatory inputClass edDocumnetIndexClass readonlyIfNotNull"
+								name="agent_cuid" id="agent_cuid" value="<AGENTCUID>" /></TD>
+						</TR>
+						<TR class="lblclass">
+							<TD>Agent Email</TD>
+						</TR>
+						<TR class="dataclass">
+							<TD><input type="text" maxlength="100" size="40" columnPosition="201"
+								EDLABEL="Agent Email"
+								class="readonlyIfNotNull docsMandatory inputClass edDocumnetIndexClass"
+								name="agent_email_id" id="agent_email_id" value="<AGENTEMAIL>" /></TD>
+						</TR>
+						<TR class="lblclass">
+							<TD>Agent Contact Phone Number</TD>
+						</TR>
+						<TR class="dataclass">
+							<TD><input type="text" maxlength="20" size="40" columnPosition="202" EDLABEL="Agent Contact Phone Number"
+								class="readonlyIfNotNull docsMandatory inputClass edDocumnetIndexClass" name="agent_phone_no"
+								id="agent_phone_no" value="<AGENTPHONENUMBER>" disabled/></TD>
+						</TR>
+					</table>
+					<center style="padding: 20px 0px 20px 0px">
+						<button id="submit" type="button" name="submit"
+							onclick="validateActionsandSubmit()" value="submit"
+							class="button green medium">Submit</button>
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						<button id="reset" name="reset" type="reset" value="reset"
+							onclick="resetFormContent()" class="button green medium">Reset</button>
+					</center>
+
+
+				</div>
+			</form>
+		</div>
+	</div>
+</body>
+</html>

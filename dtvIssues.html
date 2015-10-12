@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<HTML class="msie msie9">
+<HEAD>
+<META content="IE=9.0000" http-equiv="X-UA-Compatible">
+<HEAD>
+<TITLE> DIRECTV Issues Form</TITLE>
+
+<script type="text/javascript">
+$(document).ready(function(){
+initializeScript();
+
+$("#ticketReason").change( 
+	function()	
+	{		
+		var ticketReasonVal = $("#ticketReason").val();
+		
+		if(ticketReasonVal == "DIRECTV billing to wrong customer")
+		{
+			$("#mismatchBTN").addClass("docsMandatory");
+			$("#mismatchBTN").parent().parent().prev().children().first().html("MISMATCH BTN"+"<span style='color:red'>&nbsp;*</span>")
+		}
+		else
+		{
+			$("#mismatchBTN").removeClass("docsMandatory");
+			$("#mismatchBTN").parent().parent().prev().children().first().text("MISMATCH BTN");
+		}		
+	});
+
+});
+function validateAndSubmitFormData(){
+	$("#mismatchBTN").removeClass("redborder");
+	
+	if(validate()) 
+	{
+		resetTaskInfoObjects();
+		var obj={"id":"ED_HEADER","value":"DIRECTV Issues"};
+		dataMap.dataMapKeyValues.push(obj);
+		
+		var ticketReason = $("#ticketReason").val();
+		
+		if(null != ticketReason && ticketReason != "" && ticketReason != "-1")
+		{
+			if(ticketReason == "DIRECTV billing to wrong customer" || ticketReason == "Combine standalone to wireline (Only if order can't be done in C+)" || ticketReason == "OPT In (Only if order can't be done in C+)" || ticketReason == "OPT Out (Only if order can't be done in C+)" )
+			{
+				obj={"id":"CTG_Identifier","value":"DTVIssues"};
+			}
+			else if(ticketReason == "DIRECTV is not billing" || ticketReason == "DIRECTV disc/opted out but still billing" || ticketReason == "(MPS Only)Need SPAN/USOC added to CSR" || ticketReason == "(MPS Only)Needs further investigation" || ticketReason == "(SSC Group only)VMDU Opt in" || ticketReason == "RMSC Cris error group only)Order in CE status" || ticketReason == "VMDU Combine Standalone bill to existing BTN" ||  ticketReason == "VMDU Finance Issues - Only to be used by Finance Team" || ticketReason == "CMC Only: Need to add SCG4X but SPAN/USOC are missing")
+			{
+				obj={"id":"CTG_Identifier","value":"DTVIssuesLog2"};
+			}
+			else if(ticketReason == "DIRECTV is double billing every other month" || ticketReason == "3 Yr Price Guarantee Escalation")
+			{
+				obj={"id":"CTG_Identifier","value":"DTVIssuesLog3"};
+			}
+			dataMap.dataMapKeyValues.push(obj);
+		}
+		
+
+		/* Krishna Medury 10/30/2014: As part of CR 325 Next Bill Date needs to be populated as Task Due Date. The Date format for task Due date is dd-MMM-yyyy KK:mm:ss a
+		The format for Next Due Date is mm/dd/yy. So the below code converts next bill date to required format. ED will still show next bill date's original format.
+		If the Date picker format is changed from mm/dd/yy, the below code has to change. Otherwise task due date will not be populated.
+		*/
+		var nextbillDt = $("#next_bill_date").val();
+		if("" != nextbillDt)
+		{
+			var dtArray = nextbillDt.split("/");
+			var nextbillDtDay = new Date();
+			// set Year, Month (0-11), Date 
+			nextbillDtDay.setFullYear(dtArray[2],dtArray[0]-1,dtArray[1]);			
+			var newDtFormat = $.datepicker.formatDate('d-M-yy', nextbillDtDay)+" 00:00:00 AM";
+			obj={"id":"next_bill_date_new_format","value":newDtFormat};
+			dataMap.dataMapKeyValues.push(obj);			
+		}		
+		submitValues(); 
+	}
+}
+
+</script>
+</HEAD>
+
+<BODY>
+<div id="container">
+<div id="headerDiv">
+	<h1>DIRECTV Issues Form</h1>
+</div>
+<div id="bodyDiv">
+<FORM id="form76" class="formClass" accept-charset="UTF-8" encType="multipart/form-data" 
+	method="post" name="form76" novalidate="" autocomplete="off">
+	<div id="bodyHeader" class="fontStyles">
+		<H2>DIRECTV Issues</H2>
+		<DIV id="headerInfo">Please provide all mandatory information.
+		<div style="padding-left:15px;">
+			<span style="color:red">*</span> indicates mandatory element			
+		</div>
+		</DIV>
+	</div>
+	<div id="bodyData">
+		<h3 id="bodyDataHeader" class="fontStyles">Customer Information</h3>
+		<TABLE id="mainTableForm">
+			<TR class="lblclass" tooltip="Enter Customer BTN">
+				<TD class="mandatoryInd">Customer BTN</TD>
+			</TR>
+			<TR class="dataclass">
+				<TD><input type="text" class="docsMandatory docsTelephone inputClass edDocumnetIndexClass" EDLABEL="Customer BTN" id="btn" name="btn" columnPosition="1" maxlength="20"></TD>
+			</TR>
+
+			<TR class="lblclass" tooltip="Enter Customer Code" >
+				<TD class="mandatoryInd">Customer Code</TD>
+			</TR>
+			<TR class="dataclass">
+				<TD><input type="text" class="docsMandatory docsNumerics inputClass edDocumnetIndexClass" EDLABEL="Customer Code" id="custCode" name="custCode" maxlength="3" columnPosition="2"></TD>
+			</TR>
+	
+			<TR class="lblclass" tooltip="Enter Customer First Name">
+				<TD class="mandatoryInd">Customer First Name</TD>
+			</TR>
+			<TR class="dataclass">
+				<TD><input type="text" id="customerFirstName" name="customerFirstName" EDLABEL="Customer First Name" class="docsMandatory docsAlphabets inputClass edDocumnetIndexClass" maxlength="40" columnPosition="3"></TD>
+			</TR>
+			
+			<TR class="lblclass" tooltip="Enter Customer Last Name">
+				<TD class="mandatoryInd">Customer Last Name</TD>
+			</TR>
+			<TR class="dataclass">
+				<TD><input type="text" id="customerLastName" name="customerLastName" EDLABEL="Customer Last Name" class="docsMandatory docsAlphabets inputClass edDocumnetIndexClass" maxlength="40" columnPosition="4"></TD>
+			</TR>
+			
+			<TR class="lblclass" tooltip="Enter DIRECTV Account Number">
+				<TD class="mandatoryInd">DIRECTV Account Number</TD>
+			</TR>			
+			
+			<TR class="dataclass">
+				<TD><input type="text" class="docsMandatory inputClass edDocumnetIndexClass" EDLABEL="DIRECTV Account Number" id="dtvAccountNumber" name="dtvAccountNumber" maxlength="40" columnPosition="5"></TD>
+			</TR>
+
+			
+			<TR  class="lblclass"  tooltip="Enter Next Bill Date">
+				<TD class="mandatoryInd">Next Bill Date</TD>
+			</TR>
+			<TR class="dataclass">
+				<TD ><input type="text" maxlength="10" class="docsMandatory datepickerFutureOnly inputClass edDocumnetIndexClass" EDLABEL="Next Bill Date" columnPosition="6"  name="next_bill_date" id="next_bill_date"></TD>
+			</TR>
+			
+			
+			<TR class="lblclass" tooltip="Enter CPAN">
+				<TD >CPAN</TD>
+			</TR>
+			<TR class="dataclass">
+				<TD><input type="text" id="CPAN" name="CPAN" EDLABEL="CSPAN" class="inputClass edDocumnetIndexClass" maxlength="40" columnPosition="7"/>
+				</TD>
+			</TR>
+			
+			<TR class="lblclass" tooltip="Select Ticket Reason">
+				<TD class="mandatoryInd">Ticket Reason</TD>
+			</TR>
+			<TR class="dataclass">
+				<TD>
+						<SELECT class="docsMandatory inputClass edDocumnetIndexClass" EDLABEL="Ticket Reason" id="ticketReason" name="ticketReason" columnPosition="8">
+								<option value="-1"> --Select-- </option>
+								<option value="DIRECTV billing to wrong customer">DIRECTV billing to wrong customer</option>
+								<option value="DIRECTV is not billing">DIRECTV is not billing</option>
+								<option value="DIRECTV disc/opted out but still billing">DIRECTV disc/opted out but still billing</option>
+								<option value="Combine standalone to wireline (Only if order can't be done in C+)">Combine standalone to wireline (Only if order can't be done in C+)</option>
+								<option value="DIRECTV is double billing every other month">DIRECTV is double billing every other month</option>
+								<option value="OPT In (Only if order can't be done in C+)">OPT In (Only if order can't be done in C+)</option>
+								<option value="OPT Out (Only if order can't be done in C+)">OPT Out (Only if order can't be done in C+)</option>
+								<option value="CMC Only: Need to add SCG4X but SPAN/USOC are missing">CMC Only: Need to add SCG4X but SPAN/USOC are missing</option>
+								<option value="(MPS Only)Need SPAN/USOC added to CSR">(MPS Only)Need SPAN/USOC added to CSR</option>
+								<option value="(MPS Only)Needs further investigation">(MPS Only)Needs further investigation</option>
+								<option value="(SSC Group only)VMDU Opt in">(SSC Group only)VMDU Opt in</option>
+								<option value="RMSC Cris error group only)Order in CE status">RMSC Cris error group only)Order in CE status</option>
+								<option value="VMDU Finance Issues - Only to be used by Finance Team">VMDU Finance Issues - Only to be used by Finance Team</option>
+								<option value="3 Yr Price Guarantee Escalation">3 Yr Price Guarantee Escalation</option>
+								<option value="VMDU Combine Standalone bill to existing BTN">VMDU Combine Standalone bill to existing BTN</option>
+							</SELECT>
+				</TD>
+			</TR>			
+							
+			<TR class="lblclass" tooltip="Enter MISMATCH BTN">
+				<TD >MISMATCH BTN</TD>
+			</TR>
+			<TR class="dataclass">
+				<TD><input type="text" name="mismatchBTN" id="mismatchBTN" class="docsTelephone inputClass edDocumnetIndexClass" maxlength="20" EDLABEL="MISMATCH BTN" columnPosition="9"><br/><label class="additionalLabel">Used if customer is being billed for another account. REQUIRED: Provide the BTN the charges should be going to here. Provide the customer name in the notes field.</label> </TD>
+			</TR>
+			
+			<TR class="lblclass" tooltip="Enter Additional Notes">
+				<TD>Additional Notes</TD>
+			</TR>
+			<TR class="dataclass">
+				<TD><TEXTAREA NAME="Additional_Notes" ROWS="6" COLS="35" class="counter inputClass edDocumnetIndexClass" id="Additional_Notes" EDLABEL="Additional Notes" columnPosition="10"></textarea></TD>
+			</TR>
+			<TR class="headerclass">
+							<TD align=center class="fontStyles"><H3>Submitter
+									Information</H3></TD>
+						</TR>
+						<TR class="lblclass">
+							<TD>Your CUID</TD>
+						</TR>
+						<TR class="dataclass">
+							<TD><input type="text" maxlength="25" size="40" columnPosition="200" EDLABEL="Agent cuid"
+								class="docsMandatory inputClass edDocumnetIndexClass readonlyIfNotNull" name="agent_cuid"
+								id="agent_cuid" value="<AGENTCUID>" /></TD>
+						</TR>
+						<TR class="lblclass">
+							<TD>Your Contact Email Address</TD>
+						</TR>
+						<TR class="dataclass">
+							<TD><input type="text" maxlength="100" size="40" columnPosition="201" EDLABEL="Contact Email Address"
+								class="readonlyIfNotNull docsMandatory inputClass edDocumnetIndexClass" name="agent_email_id"
+								id="agent_email_id" value="<AGENTEMAIL>" /></TD>
+						</TR>
+						<TR class="lblclass">
+							<TD>Your Contact Phone Number</TD>
+						</TR>
+						<TR class="dataclass">
+							<TD><input type="text" maxlength="20" size="40" columnPosition="202" EDLABEL="Contact Phone Number"
+								class="readonlyIfNotNull docsMandatory inputClass edDocumnetIndexClass" name="agent_phone_no"
+								id="agent_phone_no" value="<AGENTPHONENUMBER>" disabled/></TD>
+						</TR>
+						
+		</TABLE>
+		<center style="padding:20px 0px 20px 0px">
+			<button id="submit" type="button" name="submit" value="submit" class="button green medium" onclick="validateAndSubmitFormData();">
+			Submit</button>&nbsp;&nbsp;&nbsp;&nbsp;
+			<button id="reset" name="reset" onclick="resetFormContent()" value="reset" class="button green medium">
+							Reset</button>
+		</center>
+	</div>
+
+	</form>
+</div>
+	
+</div>
+</BODY>
+</HTML>
