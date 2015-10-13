@@ -87,6 +87,308 @@ body{
 						</TR>
 					</table>
 					<div class='actionArea'>
+<!--  ####################################################New from Till here ############################################-->
+						<table id='newOrder' style='display:none'>
+						<TR>
+						<tr><td class='lblclass'>Sales Code <font color='red'>*</font></td></tr>
+						<tr><td ><input type='text' maxlength='20' size='40' name='sales_code' id='sales_code'></td></tr>
+
+						<tr><td class='lblclass' >State <font color='red'>*</font></td></tr>
+						<tr><td ><select name='state' id='state' onchange="changeCity()">
+							<option value="">--SELECT STATE--</option>
+							<option value="CO">CO-Colorado</option>
+							<option value="IA">IA-Iowa</option>
+							<option value="ID">ID-Idaho</option>
+							<option value="MN">MN-Minnesota</option>
+							<option value="MT">MT-Montana</option>
+							<option value="NC">NC-North Carolina</option>
+							<option value="ND">ND-North Dakota</option>
+							<option value="NE">NE-Nebraska</option>
+							<option value="OR">OR-Oregon</option>
+							<option value="SD">SD-South Dakota</option>
+							<option value="UT">UT-Utah</option>
+							<option value="WA">WA-Washington</option>
+						</select>
+						</td></tr>
+
+						<tr><td class='lblclass'>City <font color='red'>*</font></td></tr>
+						<tr><td ><select name='city' id='city'>
+						<option value=''>--SELECT CITY--</option>
+						</select>
+						</td></tr>
+
+						<tr><td class='lblclass'>Text Area Rate <font color='red'>*</font></td></tr>
+						<tr><td ><input type='text' maxlength='20' size='40' name='text_area_rate' id='text_area_rate'></td></tr>
+						<tr><td class='lblclass'>Exchange <font color='red'>*</font></td></tr>
+						<tr><td ><input type='text' maxlength='20' size='40' name='exchange' id='exchange'></td></tr>
+
+						<tr><td class='lblclass'>Consumer Or Small Business <font color='red'>*</font></td></tr>
+						<tr><td ><input type='radio' onclick="showHideSmallBusinessType('consumer')" name='consumer_or_smallbusiness' value='consumer'>Consumer &nbsp
+						<input type='radio'  onclick="showHideSmallBusinessType('small_business')" name='consumer_or_smallbusiness' value='small_business'>Small Business &nbsp</td></tr>
+
+						<tr><td class='lblclass small_business_type' style='display:none'>Type of Business Ownership</td></tr>
+						<tr><td><select name='small_business_type' id='small_business_type' onchange="showCorporationSubFields()" style='display:none'>
+							<option value=''>-SELECT TYPE-</option>
+								<option value='sole'>Sole</option>
+							<option value='partnership'>Partnership</option>
+								<option value='corporation'>Corporation</option>
+						</select>
+						</td></tr>
+
+						<tr><td class='lblclass'>Billing Name</td></tr>
+						<tr><td ><input type='text' maxlength='20' size='40' name='billing_name' id='billing_name'></td></tr>
+
+						<tr><td class='lblclass customer_dob' style='display:none' >Customer Date of Birth</td></tr>
+						<tr><td ><input type='text'  style='display:none' maxlength='20' size='40' name='customer_dob' id='customer_dob' ></td></tr>
+
+						<!-- <tr><td class='lblclass'>Customer Social Security Number</td></tr>
+						<tr><td ><input type='text' maxlength='20' size='40' name='customer_social_security_number' id='customer_social_security_number' ></td></tr> -->
+
+						<tr><td class='lblclass customer_tax_id' style='display:none' >Customer Tax Id <font color='red'>*</font></td></tr>
+						<tr><td ><input type='text' maxlength='20'  style='display:none' size='40' name='customer_tax_id' id='customer_tax_id' ></td></tr>
+
+
+						<tr><td class='lblclass'>CRV (contact ACT via Chat to retrieve Bordertown CRV) <font color='red'>*</font></td></tr>
+						<tr><td ><input type='text' maxlength='20' size='40' name='crv' id='crv' ></td></tr>
+
+						<tr><td class='lblclass'>Credit Information (responsible party, employer, who is authorized, CBRs, etc.) <font color='red'>*</font></td></tr>
+						<tr><td ><textarea name='credit_information' cols='70' rows='5' id='credit_information' ></textarea></td></tr>
+
+						<tr><td class='lblclass'>Is billing address same as service address? </td></tr>
+						<tr><td ><input type='radio' onclick="billing_address_get('yes')" name='billing_address_same' value='1'>Yes &nbsp
+						<input type='radio'  onclick="billing_address_get('no')" name='billing_address_same' value='0'>No &nbsp</td></tr>
+
+						<tr id='billing_address_1_label' style='display:none'><td class='lblclass'>Billing Address Line 1</td></tr>
+						<tr id='billing_address_1' style='display:none'><td ><input type='text' maxlength='20' size='40' name='billing_address_1' id='billing_address_1' ></td></tr>
+
+						<tr id='billing_address_2_label' style='display:none'><td class='lblclass'>Billing Address Line 2</td></tr>
+						<tr id='billing_address_2' style='display:none'><td ><input type='text' maxlength='20' size='40' name='billing_address_2' id='billing_address_2' ></td></tr>
+
+						<tr id='billing_city_state_zip_label' style='display:none'><td class='lblclass'>Billing City, ST, Zip</td></tr>
+						<tr id='billing_city_state_zip' style='display:none'><td ><input type='text' maxlength='20' size='40' name=' billing_city_state_zip' id=' billing_city_state_zip' ></td></tr>
+
+						<tr><td class='lblclass'>Requested BTN or DTN (retrieve from TAG or NSAC) <font color='red'>*</font></td></tr>
+						<tr><td ><input type='text' maxlength='20' size='40' name='requested_btn_dtn' id='requested_btn_dtn' ></td></tr>
+
+						<tr><td class='lblclass'>Requested Due Date <font color='red'>*</font></td></tr>
+						<tr><td ><input type='text' maxlength='20' size='40' name='requested_due_date' id='requested_due_date' ></td></tr>
+
+						<tr><td class='lblclass'>Is dispatch required (line, remote terminal, tech install, etc.) <font color='red'>*</font> </td></tr>
+						<tr><td>
+							<input type='radio' onclick="dispatchRequired('yes')" name='dispatch_required' value='1'>Yes &nbsp
+							<input type='radio'  onclick="dispatchRequired('no')" name='dispatch_required' value='0'>No &nbsp
+						</td></tr>
+
+						<tr class='dispatch_req_1' style='display:none'><td class='lblclass'>Appointment Scheduler Confirmation # (ARN)</td></tr>
+						<tr class='dispatch_req_2' style='display:none'><td ><input type='text' maxlength='20' size='40' name='arn' id='arn' ></td></tr>
+
+						<tr class='dispatch_req_3' style='display:none'><td class='lblclass'>Apointment Scheduler Access Times</td></tr>
+						<tr class='dispatch_req_4' style='display:none'><td >A: <input type='text' name='asct_a'  style='width:100px' placeholder="Ex: 12:30" id='asct_a'><select name='asct_am_pm_a' id='asct_am_pm_a'><option value='AM'>AM</option><option value='PM'</option>PM</select>
+							 B: <input type='text' name='asct_b'  style='width:100px' placeholder="Ex: 12:30" id='asct_b'><select name='asct_am_pm_b' id='asct_am_pm_b'><option value='AM'>AM</option><option value='PM'</option>PM</select>
+								C : <input type='text' name='asct_c'  style='width:100px' placeholder="Ex: 12:30" id='asct_c'><select name='asct_am_pm_c' id='asct_am_pm_c'><option value='AM'>AM</option><option value='PM'</option>PM</select>
+							</td></tr>
+
+							<tr><td class='lblclass'>Directory Listing</td></tr>
+							<tr><td ><select name='directory_listing' id='directory_listing' >
+								<option value='published'>Published</option>
+								<option value='non-published'>Non-Published</option>
+								<option value='non-listed'>Non-Listed</option>
+							</select>
+							</td></tr>
+
+							<tr><td class='lblclass'> Listed Name - how should appear in phone book?</td></tr>
+							<tr><td ><input type='text' maxlength='20' size='40' name='listed_name_in_phone_book' id='listed_name_in_phone_book' ></td></tr>
+
+							<tr><td class='lblclass'>What promotional discounts will be needed on the order?<br> (Please include all discount, closer offers, etc. Include DIS FIDs if applicable).</td></tr>
+							<tr><td ><textarea name='promotional_discount' cols='70' rows='5' id='promotional_discount'></textarea></td></tr>
+
+
+						<tr><td class='lblclass'>Products customer is ordering</td></tr>
+						<tr><td class='product_consumer_ord'><input type='checkbox' id='internet' onclick="showDivCatWise()" maxlength='20' size='40' name='product_customer_is_reordering[]' value='internet'>Internet &nbsp
+						<input type='checkbox' onclick="showDivCatWise()" id='telephone' maxlength='20' size='40' name='product_customer_is_reordering[]' value='telephone'>Telepone &nbsp
+						<input type='checkbox' onclick="showDivCatWise()" id='prism' maxlength='20' size='40' name='product_customer_is_reordering[]' value='prism'>Prism    &nbsp
+						<input type='checkbox' onclick="showDivCatWise()" id='directv' maxlength='20' size='40' name='product_customer_is_reordering[]' value="directv">Directv  &nbsp
+						</td></tr>
+
+
+						<tr class='internet'>
+						<td>
+							<table>
+								<tr><td class='lblclass'>Type of internet service (Check Loop Qual for technology type and speed availability)</td></tr>
+								<tr><td><select id='type_of_internet_service' name='type_of_internet_service'>
+									<option value='ATM'>ATM</option>
+									<option value='IP ADSL2+'>IP ADSL2+</option>
+									<option value='IP VDSL2'>IP VDSL2</option>
+									<option value='IP ADSL2+ Pair Bond'>IP ADSL2+ Pair Bond</option>
+									<option value='IP VDSL2 Pair Bond'>IP VDSL2 Pair Bond</option>
+									<option value='GPON/FTTP'>GPON/FTTP</option>
+								</select></td></tr>
+
+								<tr><td class='lblclass'>Internet Speed</td></tr>
+								<tr><td><select id='internet_speed' name='internet_speed'>
+								<option value=''>--SELECT--</option>
+								</select></td></tr>
+
+								<tr><td class='lblclass'>Internet Speed</td></tr>
+ 							 <tr><td><select id='internet_speed' name='internet_speed'>
+ 							 <option value=''>--SELECT--</option>
+ 							 </select></td></tr>
+
+
+							 <tr><td class='lblclass'>Internet Service Provider</td></tr>
+							 <tr><td><select id='internet_service_provider' name='internet_service_provider'>
+							 <option value=''>--SELECT--</option>
+							 <option value='CenturyLink Internet'>CenturyLink Internet</option>
+						   <option value='Internet Basic'>Internet Basic</option>
+							 <option value='Alternate ISP'>Alternate ISP</option>
+							 </select></td></tr>
+
+							<tr><td class='lblclass'>What Alternate ISP has the customer chosen?</td></tr>
+							<tr><td><textarea id='what_alternate_isp_customer_chosen' name='what_alternate_isp_customer_chosen'></textarea></td></tr>
+
+						 <tr><td class='lblclass'>Does customer need a modem?</td></tr>
+						 <tr><td><select id='modem_required' name='modem_required'>
+						 <option value=''>--SELECT--</option>
+						 <option value='yes'>Yes</option>
+						 <option value='no'>No</option>
+						 </select></td></tr>
+
+						 <tr><td class='lblclass'>Lease or Purchase?</td></tr>
+						<tr><td><select id='lease_or_purchase' name='lease_or_purchase'>
+						<option value=''>--SELECT--</option>
+						<option value='lease'>lease</option>
+						<option value='purchased'>purchased</option>
+						</select></td></tr>
+
+						<tr><td class='lblclass'>1 or 3 payments?</td></tr>
+						<tr><td><select id='1_or_3_payments' name='1_or_3_payments'>
+						<option value=''>--SELECT--</option>
+						<option value='1'>1 Payment</option>
+						<option value='3'>3 Payment</option>
+						</select></td></tr>
+
+						<tr><td class='lblclass'>Type of Install</td></tr>
+						<tr><td><select id='install_type' name='install_type'>
+						<option value=''>--SELECT--</option>
+						<option value='network_install'>Networking Install</option>
+						<option value='self_install'>Self Install</option>
+						<option value='tech_install'>Tech Install</option>
+						</select></td></tr>
+
+
+						<tr><td class='lblclass'>Is shipping address same as service address?</td></tr>
+						<tr><td><input type='radio' name='yes'>Yes &nbsp <input type='radio' name='no'>No</td></tr>
+
+						<tr><td class='lblclass'>Shipping Address</td></tr>
+						<tr><td><textarea cols='70' rows='5' name='shipping_address' id='shipping_address'></textarea></td></tr>
+
+						<tr><td class='lblclass'>Additional internet products or services needed</td></tr>
+						<tr><td><textarea cols='70' rows='5' name='additional_internet_product_or_service_needed' id='additional_internet_product_or_service_needed'></textarea></td></tr>
+							</table>
+						</td>
+						</tr>
+
+						<tr class='telephone'>
+						<td>
+							<table>
+								<tr><td class='lblclass'>Is this a Winback order?</td></tr>
+								<tr><td><input type='radio' name='is_winback_order' id='is_winback_order' onchange="isWinbackOrder('yes')" > Yes &nbsp <input type='radio'  onchange="isWinbackOrder('no')" name='is_winback_order' id='is_winback_order'> No </td></tr>
+								<tr><td><input type='checkbox' name='tpv_completed' id='tpv_completed'> Click here to acknowledge TPV has been completed.</td></tr>
+								<tr><td class='lblclass'>Customer Current Provider</td></tr>
+								<tr><td><textarea cols='70' rows='5' name='customer_current_provider' id='customer_current_provider'></textarea></td></tr>
+								<tr><td class='lblclass'>Telephone Number to be ported</td></tr>
+								<tr><td ><input type='text' name='telephone_ported' id='telephone_ported' ></td></tr>
+								<tr><td class='lblclass'>Telephone products requested (be detailed, what telephone service is the customer requesting.<br>
+									What package, long distance provider/plan (if any), what features does the customer want, etc.</td></tr>
+								<tr><td><textarea cols='70' rows='5' name='customer_current_provider' id='customer_current_provider'></textarea></td></tr>
+								<tr><td class='lblclass'>Are jacks and wiring required?</td></tr>
+								<tr><td><input type='radio' name='jacks_wiring_required' id='jacks_wiring_required_yes' > Yes &nbsp
+								<input type='radio'  name='jacks_wiring_required' id='jacks_wiring_required_no'> No </td></tr>
+
+								<tr><td>How many jacks are needed?</td></tr>
+								<tr><td ><input type='text' name='jacks_needed' id='jacks_needed' ></td></tr>
+
+								<tr><td>Does the customer need an additional line?</td></tr>
+								<tr><td><input type='radio' name='customer_need_additional_line' id='customer_need_additional_line_yes' > Yes &nbsp
+								<input type='radio'  name='customer_need_additional_line' id='customer_need_additional_line_no'> No </td></tr>
+
+								<tr><td class='lblclass'>How many additional lines?</td></tr>
+								<tr><td >
+									<select name='additional_line' id='additional_line'>
+										<option value=''>--Select--</option>
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="3">3</option>
+										<option value="4">4</option>
+										<option value="5">5</option>
+										<option value="6">6</option>
+										<option value="7">7</option>
+										<option value="8">8</option>
+										<option value="9">9</option>
+										<option value="10">10</option>
+								</select>
+							</td></tr>
+
+							</table>
+						</td>
+						</tr>
+
+						<tr class='directv'>
+						<td>
+							<table>
+								<tr><td class='lblclass'>DIRECTV service requested (how many receivers and which types? <br>What programming package and promo? What additional channels are being requested ?</td></tr>
+								<tr><td><textarea cols='70' rows='5' name='directv_service_requested' id='directv_service_requested'></textarea></td></tr>
+							</table>
+						</td>
+						</tr>
+
+
+						<tr class='prism'>
+						<td>
+						<table>
+							<tr><td class='lblclass'>Prism service requested (how many receivers and which types?<br> What programming package and promo? What additional channels are being requested?</td></tr>
+							<tr><td><textarea cols='70' rows='5' name='prism_service_requested' id='prism_service_requested'></textarea></td></tr>
+						</table>
+						</td>
+						</tr>
+
+						<tr><td class='lblclass'>CBR Name</td></tr>
+						<tr><td ><input type='text' maxlength='20' size='40' name='cbr_name' id='cbr_name' ></td></tr>
+
+						<tr><td class='lblclass'>CBR Number (note cannot match BTN)</td></tr>
+						<tr><td ><input type='text' maxlength='10' size='40' name='cbr_number_cannot_match_btn' id='cbr_number_cannot_match_btn' ></td></tr>
+
+						<tr><td class='lblclass'>Customer Email Name</td></tr>
+						<tr><td ><input type='text' maxlength='20' size='40' name='customer_email_name' id='customer_email_name' ></td></tr>
+
+						<tr><td class='lblclass'>Special Order Remarks</td></tr>
+						<tr><td ><textarea cols='70' rows='5' name='special_order_remarks' id='special_order_remarks' ></textarea> </td></tr>
+						</table>
+<!---- ####################################################New Order Till here ############################################-->
+
+<!-- ################################Change Order Table From herer #################################################### -->
+<table id='changeOrder' style='display:none'>
+	<tr><td class='lblclass'>XXXX</td></tr>
+	<tr><td ><input type='text' maxlength='20' size='40' name='' id='' ></td></tr>
+</table>
+<!-- ################################Change Order Table Till Here  ####################################################--->
+
+
+<!-- ################################Disc Order Table From herer #################################################### -->
+<table id='discOrder' style='display:none' >
+	<tr><td class='lblclass'>XXXX</td></tr>
+	<tr><td ><input type='text' maxlength='20' size='40' name='' id='' ></td></tr>
+</table>
+<!-- ################################Disc Order Table Till Here  ####################################################--->
+
+
+<!-- ################################ T & F Order Table From herer #################################################### -->
+<table id='tnfOrder' style='display:none' >
+	<tr><td class='lblclass'>XXXX</td></tr>
+	<tr><td ><input type='text' maxlength='20' size='40' name='' id='' ></td></tr>
+</table>
+<!-- ################################ T & F Order Table Till Here  ####################################################--->
+
 					</div>
 
 					<table>
@@ -94,7 +396,7 @@ body{
 						      Information</H3></TD>
 						</TR>
 						<TR class="lblclass">
-						  <TD>Agent CUID</TD>
+						  <TD>Agent CUID <font color='red'>*</font></TD>
 						</TR>
 						<TR class="dataclass">
 						  <TD><input type="text" maxlength="25" size="40" columnPosition="200"
@@ -103,7 +405,7 @@ body{
 						    name="agent_cuid" id="agent_cuid" value="<AGENTCUID>" /></TD>
 						</TR>
 						<TR class="lblclass">
-						  <TD>Agent Email</TD>
+						  <TD>Agent Email <font color='red'>*</font></TD>
 						</TR>
 						<TR class="dataclass">
 						  <TD><input type="text" maxlength="100" size="40" columnPosition="201"
@@ -112,7 +414,7 @@ body{
 						    name="agent_email_id" id="agent_email_id" value="<AGENTEMAIL>" /></TD>
 						</TR>
 						<TR class="lblclass">
-						  <TD>Agent Contact Phone Number</TD>
+						  <TD>Agent Contact Phone Number <font color='red'>*</font></TD>
 						</TR>
 						<TR class="dataclass">
 						  <TD><input type="text" maxlength="20" size="40" columnPosition="202" EDLABEL="Agent Contact Phone Number"
@@ -143,27 +445,46 @@ body{
 function getDetailsForOrderType(){
 pref=document.getElementById('OrderType').value;
 
-if(pref=='New')
-redirectionUrl='newOrder.html';
-if(pref=='Change')
-redirectionUrl='ChangeOrder.html';
-if(pref=='Disc')
-redirectionUrl='DiscOrder.html';
-if(pref=='T&F')
-	redirectionUrl='tnfOrder.html';
+if(pref=='New'){
+$('#newOrder,#changeOrder,#discOrder,#tnfOrder').hide();
+$('#newOrder').show();
+}
+else if(pref=='Change'){
+	$('#newOrder,#changeOrder,#discOrder,#tnfOrder').hide();
+	$('#changeOrder').show();
+}
+else if(pref=='Disc'){
+	$('#newOrder,#changeOrder,#discOrder,#tnfOrder').hide();
+  $('#discOrder').show();
+}
+else if(pref=='T&F'){
+	$('#newOrder,#changeOrder,#discOrder,#tnfOrder').hide();
+  $('#tnfOrder').show();
+}
+else{
+	$('#newOrder,#changeOrder,#discOrder,#tnfOrder').hide();
+}
+// if(pref=='New')
+// redirectionUrl='newOrder.html';
+// if(pref=='Change')
+// redirectionUrl='ChangeOrder.html';
+// if(pref=='Disc')
+// redirectionUrl='DiscOrder.html';
+// if(pref=='T&F')
+// 	redirectionUrl='tnfOrder.html';
 
-$.ajax({
-  url:redirectionUrl,
-  type:'GET',
-	dataType:'HTML',
-  success:function(data){
- $('.actionArea').html(data);
- initSet();
-  },
-  error:function(){
-    $('.actionArea').html("<font color='red'>En Error has occured !</font>");
-  }
-});
+// $.ajax({
+//   url:redirectionUrl,
+//   type:'GET',
+// 	dataType:'HTML',
+//   success:function(data){
+//  $('.actionArea').html(data);
+//  initSet();
+//   },
+//   error:function(){
+//     $('.actionArea').html("<font color='red'>En Error has occured !</font>");
+//   }
+// });
 
 }
 
@@ -219,10 +540,79 @@ function changeCity(){
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 
 <script>
+initSet();
 function initSet(){
 	$( "#customer_dob,#requested_due_date" ).datepicker();
 
 }
 
+function showHideSmallBusinessType(type){
 
+				if(type=='small_business')
+				$('#small_business_type,.small_business_type').show();
+				else
+				$('#small_business_type,.small_business_type').hide();
+
+}
+
+function showCorporationSubFields(){
+	bt=$('#small_business_type').val();
+
+	if(bt=='corporation'){
+	$('.customer_tax_id,#customer_tax_id').show();
+	$('#customer_dob,.customer_dob').hide();
+  }
+	else{
+		$('.customer_tax_id,#customer_tax_id').hide();
+		$('#customer_dob,.customer_dob').show();
+  }
+
+}
+
+function billing_address_get(chosen)
+{
+	if(chosen=='no')
+	$('#billing_city_state_zip_label,#billing_city_state_zip,#billing_address_1,#billing_address_1_label,#billing_address_2,#billing_address_2_label').show();
+	else
+	$('#billing_city_state_zip_label,#billing_city_state_zip,#billing_address_1,#billing_address_1_label,#billing_address_2,#billing_address_2_label').hide();
+}
+
+function dispatchRequired(chosen){
+	if(chosen=='yes')
+	$('.dispatch_req_1,.dispatch_req_2,.dispatch_req_3,.dispatch_req_4').show();
+	else
+	$('.dispatch_req_1,.dispatch_req_2,.dispatch_req_3,.dispatch_req_4').hide();
+
+}
+
+function showDivCatWise(){
+	if($('#internet').is(':checked')){
+		$('.internet').show()
+	}
+	else{
+		$('.internet').hide();
+	}
+
+	if($('#telephone').is(':checked')){
+		$('.telephone').show();
+	}
+	else {
+		$('.telephone').hide();
+	}
+
+	if($('#prism').is(':checked')){
+		$('.prism').show();
+	}
+	else{
+		$('.prism').hide();
+	}
+
+	if($('#directv').is(':checked')){
+		$('.directv').show();
+	}
+	else{
+		$('.directv').hide();
+	}
+
+}
 </script>
